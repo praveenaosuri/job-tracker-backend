@@ -1,4 +1,4 @@
-package com.jobtracker.entity;
+package com.jobtracker.job_tracker_backend.entity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
