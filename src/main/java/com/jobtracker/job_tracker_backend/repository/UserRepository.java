@@ -1,4 +1,4 @@
-package com.jobtracker.job_tracker_backend.respository;
+package com.jobtracker.job_tracker_backend.repository;
 
 import java.util.Optional;
 
@@ -11,6 +11,5 @@ import com.jobtracker.job_tracker_backend.entity.User;
 public interface UserRepository extends JpaRepository<User,Long> {
 
     Optional<User> findByEmail(String email);
-
     
 }
