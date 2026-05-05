@@ -42,7 +42,48 @@ public class JobApplicationService {
               return jobApplicationRepository.findByUser_Email(userOptional.get().getEmail());
                 
             }
-
-
+     public void updateJobApplication(JobApplication jobApplication, Long id){ 
+              Optional<User> userOptional = userRepository.findByEmail(
+                (String)  SecurityContextHolder.getContext().getAuthentication().getPrincipal()
+              );
+              if (userOptional.isEmpty()) {
+                throw new IllegalArgumentException("User not found");
+              }
+             
+              Optional<JobApplication> existingJobApplication = jobApplicationRepository.findById(id);
+              if (existingJobApplication.isEmpty()) {
+                throw new IllegalArgumentException("Job application not found");
+              }
+              if(jobApplication.getCompanyName() != null){
+                existingJobApplication.get().setCompanyName(jobApplication.getCompanyName());
+              }
+              if(jobApplication.getRole() != null){
+                existingJobApplication.get().setRole(jobApplication.getRole());
+              }
+              if(jobApplication.getStatus() != null){
+                existingJobApplication.get().setStatus(jobApplication.getStatus());
+              }
+              if(jobApplication.getNotes() != null){
+                existingJobApplication.get().setNotes(jobApplication.getNotes());
+              }
+              jobApplicationRepository.save(existingJobApplication.get());
+    }
+    
+    public void deleteJobApplication(Long id){ 
+              Optional<User> userOptional = userRepository.findByEmail(
+                (String)  SecurityContextHolder.getContext().getAuthentication().getPrincipal()
+              );
+              if (userOptional.isEmpty()) {
+                throw new IllegalArgumentException("User not found");
+              }
+             
+              Optional<JobApplication> existingJobApplication = jobApplicationRepository.findById(id);
+              if (existingJobApplication.isEmpty()) {
+                throw new IllegalArgumentException("Job application not found");
+              }
+              jobApplicationRepository.delete(existingJobApplication.get());
+    }
+    
+    
     
 }
