@@ -1,5 +1,6 @@
 package com.jobtracker.job_tracker_backend.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,6 +11,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 public class SecurityConfig {
+
+    @Autowired
+    private JwtFilter jwtFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder(){  
@@ -23,7 +27,7 @@ public class SecurityConfig {
          .authorizeHttpRequests(requests -> requests
           .requestMatchers("/api/auth/**").permitAll()
           .anyRequest().authenticated())
-          .addFilterBefore(new JwtFilter(),UsernamePasswordAuthenticationFilter.class)
+          .addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class)
           ;
         return http.build();
     }

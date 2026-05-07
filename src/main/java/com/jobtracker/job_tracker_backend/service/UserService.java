@@ -31,7 +31,8 @@ public class UserService {
       
       String hashedPassowrd=passwordEncoder.encode(password);
       user.setPassword(hashedPassowrd);
-       return userRepository.save(user);
+       User savedUser= userRepository.save(user);
+       return savedUser;
     }
   
     public String loginUser(LoginRequest loginRequest){

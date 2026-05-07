@@ -16,29 +16,38 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 
 @Component
-public class JwtFilter extends OncePerRequestFilter{
+public class JwtFilter extends OncePerRequestFilter {
      @Autowired
          private JwtUtil jwtUtil;
     @Override
     public void doFilterInternal(HttpServletRequest httpRequest,
                                            HttpServletResponse httpResponse,
                                            FilterChain filterChain
-    ) throws IOException, ServletException{
+    ) throws IOException, ServletException
+    {
         
 
         String header=httpRequest.getHeader("Authorization");
         if(header!=null && header.startsWith("Bearer ")){
             String token= header.substring(7);
-            String email=jwtUtil.extractEmail(token);
+            try{
+                if(jwtUtil.isTokenValid(token))
+                { String email=jwtUtil.extractEmail(token);
         UsernamePasswordAuthenticationToken auth=new UsernamePasswordAuthenticationToken(
             email,//principal
               null ,//password
               new ArrayList<>()
         );
-        SecurityContextHolder.getContext().setAuthentication(auth);
+        SecurityContextHolder.getContext().setAuthentication(auth);}
+            }
+            catch(Exception e){
+                httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED,"Invalid");
+                return;
+           
         }
            filterChain.doFilter( httpRequest,httpResponse);
            
     }
-    
 }
+}
+    
