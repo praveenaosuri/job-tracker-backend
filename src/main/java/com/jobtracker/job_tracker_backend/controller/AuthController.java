@@ -18,18 +18,12 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private UserResponseDTO userResponseDTO;
+   
  
     @PostMapping("/register")
     public ResponseEntity<UserResponseDTO> registerUser(@RequestBody User user){
         User savedUser = userService.registerUser(user);
-        
-        userResponseDTO.setId(savedUser.getId());
-        userResponseDTO.setName(savedUser.getName());
-        userResponseDTO.setEmail(savedUser.getEmail()); 
-        userResponseDTO.setCreatedAt(savedUser.getCreatedAt());
-        return ResponseEntity.ok(userResponseDTO);
+        return ResponseEntity.ok(UserResponseDTO.fromUser(savedUser));
     }
 
     
